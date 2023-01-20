@@ -1,0 +1,22 @@
+create table ny_taxi.green_taxi_rides (
+    vendor_id               smallint,
+    lpep_pickup_datetime    timestamp,
+    lpep_dropoff_datetime   timestamp,
+    store_and_fwd_flag      boolean,
+    rate_code_id            smallint,
+    pickup_location_id      smallint,
+    dropoff_location_id     smallint,
+    passenger_count         smallint,
+    trip_distance           numeric,
+    fare_amount             numeric,
+    extra                   numeric,
+    mta_tax                 numeric,
+    tip_amount              numeric,
+    tolls_amount            numeric,
+    ehail_fee               numeric,
+    improvement_surcharge   numeric,
+    total_amount            numeric,
+    payment_type            smallint,
+    trip_type               smallint,
+    congestion_surcharge    numeric
+)
