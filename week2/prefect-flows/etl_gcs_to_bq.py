@@ -33,8 +33,8 @@ def transform(path: str) -> pd.DataFrame:
 
 @task(
     retries=3,
-    etry_delay_seconds=[10, 30, 60])
-def write_bq(gcp_creds_block_name: str, gcp_project_id: str, trips_df: pd.DataFrame, bq_table: str) -> None:
+    retry_delay_seconds=[10, 30, 60])
+def write_bq(gcp_creds_block_name: str, gcp_project_id: str, trips_df: pd.DataFrame, bq_table: str) -> int:
     """Write dataframe to BigQuery"""
     gcp_creds_block = GcpCredentials.load(gcp_creds_block_name)
     trips_df.to_gbq(
@@ -42,9 +42,9 @@ def write_bq(gcp_creds_block_name: str, gcp_project_id: str, trips_df: pd.DataFr
         project_id=gcp_project_id,
         credentials=gcp_creds_block.get_credentials_from_service_account(),
         chunksize=500_000,
-        if_exists="append"
-    )
-    
+        if_exists="append")
+    return trips_df.shape[0]
+
 
 @flow(
     name="Uploading trip data to BigQuery",
@@ -54,20 +54,24 @@ def write_bq(gcp_creds_block_name: str, gcp_project_id: str, trips_df: pd.DataFr
 def etl_gcs_to_bq(
     dataset_color: str,
     dataset_year: int,
-    dataset_months: list[int],
+    dataset_month: int,
     gcs_bucket_block_name: str,
     gcp_creds_block_name: str,
     gcp_project_id: str,
     bq_table: str
-):
-    """Main ETL flow to load data to BigQuery"""
+) -> int:
+    """
+        Main ETL flow to load data to BigQuery
+        It returns number of rows that was processed
+    """
     # Task launch
     dataset_local_path = extract_from_gcs(gcs_bucket_block_name, dataset_color, dataset_year, dataset_month)
     trips_df = transform(dataset_local_path)
-    write_bq(gcp_creds_block_name, gcp_project_id, trips_df, bq_table)
+    rows_processed = write_bq(gcp_creds_block_name, gcp_project_id, trips_df, bq_table)
+    return rows_processed
 
 
-@flow
+@flow(log_prints=True)
 def etl_gcs_to_bq_base(
     dataset_color: str = "yellow",
     dataset_year: int = 2021,
@@ -78,17 +82,18 @@ def etl_gcs_to_bq_base(
     bq_table: str = "zoomcamp.yellow_taxi_rides"
 ):
     """Parent ETL flow for parametrizing runs"""
+    rows_processed = 0
     for dataset_month in dataset_months:
-        etl_gcs_to_bq(
+        rows_processed += etl_gcs_to_bq(
             dataset_color,
             dataset_year,
-            dataset_months,
+            dataset_month,
             gcs_bucket_block_name,
             gcp_creds_block_name,
             gcp_project_id,
-            bq_table
-        )
+            bq_table)
+    print(f"Flow cycle is finished, rows processed: {rows_processed}")
 
 
 if __name__ == "__main__":
-    etl_gcs_to_bq()
+    etl_gcs_to_bq_base()
