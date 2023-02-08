@@ -46,11 +46,7 @@ def write_bq(gcp_creds_block_name: str, gcp_project_id: str, trips_df: pd.DataFr
     return trips_df.shape[0]
 
 
-@flow(
-    name="Uploading trip data to BigQuery",
-    description="Get Green Taxi parquet from GCS bucket, clean, and load to BigQuery",
-    version=os.getenv("GIT_COMMIT_SHA")
-)
+@flow(version=os.getenv("GIT_COMMIT_SHA"))
 def etl_gcs_to_bq(
     dataset_color: str,
     dataset_year: int,
