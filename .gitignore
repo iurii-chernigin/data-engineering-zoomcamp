@@ -1,3 +1,4 @@
-homework.md
 *.csv
+*.parquet
 data/
+__pycache__/
