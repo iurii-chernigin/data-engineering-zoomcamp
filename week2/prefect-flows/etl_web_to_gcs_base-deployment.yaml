@@ -3,11 +3,17 @@
 ###
 name: etl_web_to_gcs
 description: null
-version: c3e6f46640ff5ab1ab9063b5fc46a432
+version: 1da67ec565a219aa08903db55a615e50
 # The work queue that will handle this deployment's runs
 work_queue_name: default
 tags: []
-parameters: {}
+parameters: {
+    color: "green",
+    year: 2020,
+    months: [1],
+    local_base_path: "../prefect-data",
+    gcs_base_path: "data"
+}
 schedule: null
 infra_overrides: {}
 infrastructure:
@@ -27,8 +33,8 @@ infrastructure:
 flow_name: etl-web-to-gcs-base
 manifest_path: null
 storage: null
-path: /home/y.chernigin/de-zoomcamp-homework/week2/prefect-deployments
-entrypoint: ../prefect-flows/etl_web_to_gcs.py:etl_web_to_gcs_base
+path: /home/y.chernigin/de-zoomcamp-homework/week2/prefect-flows
+entrypoint: etl_web_to_gcs.py:etl_web_to_gcs_base
 parameter_openapi_schema:
   title: Parameters
   type: object
@@ -51,13 +57,13 @@ parameter_openapi_schema:
       type: array
       items:
         type: integer
-    local_data_path:
-      title: local_data_path
-      default: data
+    local_base_path:
+      title: local_base_path
+      default: ../prefect-data
       position: 3
       type: string
-    gcs_data_path:
-      title: gcs_data_path
+    gcs_base_path:
+      title: gcs_base_path
       default: data
       position: 4
       type: string
