@@ -1,7 +1,7 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'etl-gcs-to-bq-base'
 ###
-name: Uploading trip data to BigQuery
+name: etl_gcs_to_bq
 description: Parent ETL flow for parametrizing runs
 version: 095d6eed124e5c4b0ebc2dd2b006ddf3
 # The work queue that will handle this deployment's runs

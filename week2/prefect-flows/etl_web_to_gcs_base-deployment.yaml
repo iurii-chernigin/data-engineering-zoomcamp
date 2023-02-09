@@ -1,0 +1,71 @@
+###
+### A complete description of a Prefect Deployment for flow 'etl-web-to-gcs-base'
+###
+name: etl_web_to_gcs
+description: null
+version: 1da67ec565a219aa08903db55a615e50
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+tags: []
+parameters: {
+    color: "green",
+    year: 2020,
+    months: [1],
+    local_base_path: "../prefect-data",
+    gcs_base_path: "data"
+}
+schedule: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: etl-web-to-gcs-base
+manifest_path: null
+storage: null
+path: /home/y.chernigin/de-zoomcamp-homework/week2/prefect-flows
+entrypoint: etl_web_to_gcs.py:etl_web_to_gcs_base
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    color:
+      title: color
+      default: green
+      position: 0
+      type: string
+    year:
+      title: year
+      default: 2020
+      position: 1
+      type: integer
+    months:
+      title: months
+      default:
+      - 1
+      position: 2
+      type: array
+      items:
+        type: integer
+    local_base_path:
+      title: local_base_path
+      default: ../prefect-data
+      position: 3
+      type: string
+    gcs_base_path:
+      title: gcs_base_path
+      default: data
+      position: 4
+      type: string
+  required: null
+  definitions: null
