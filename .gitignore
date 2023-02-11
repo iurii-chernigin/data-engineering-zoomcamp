@@ -1,5 +1,6 @@
 homework-solution.md
 *.csv
+*.csv.gz
 *.parquet
 data/
 __pycache__/
