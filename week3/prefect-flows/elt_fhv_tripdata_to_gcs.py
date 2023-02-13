@@ -21,11 +21,11 @@ def upload_to_gcs(dataset_local_path: str, dataset_gcs_path: str, gcs_block_name
 
 @flow(log_prints=True)
 def elt_fhv_tripdata_to_gcs(
-    year: int = 2019,
-    month: int = 2,
-    local_data_path: str = "../prefect-data",
-    gcs_data_path: str = "data/fhv",
-    gcs_block_name: str = "gcs-bucket-prefect-flows"
+    year: int,
+    month: int,
+    local_data_path: str,
+    gcs_data_path: str,
+    gcs_block_name: str
 ) -> None:
     filename = f"fhv_tripdata_{year}-{month:02}.csv.gz"
     url = f"https://github.com/DataTalksClub/nyc-tlc-data/releases/download/fhv/{filename}"
@@ -38,5 +38,18 @@ def elt_fhv_tripdata_to_gcs(
     return 
 
 
+@flow
+def elt_fhv_tripdata_to_gcs_base(
+    year: int = 2019,
+    months: list[int] = [1],
+    local_data_path: str = "../prefect-data",
+    gcs_data_path: str = "data/fhv",
+    gcs_block_name: str = "gcs-bucket-prefect-flows"
+) -> None:
+    """Base flow for parametrized control of data loading"""
+    for month in months:
+        elt_fhv_tripdata_to_gcs(year, month, local_data_path, gcs_data_path, gcs_block_name)
+
+
 if __name__ == "__main__":
-    elt_fhv_tripdata_to_gcs()
+    elt_fhv_tripdata_to_gcs_base()
