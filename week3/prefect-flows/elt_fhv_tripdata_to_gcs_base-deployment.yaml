@@ -10,7 +10,7 @@ tags: []
 parameters: {
     year: 2019,
     months: [1],
-    local_data_path: "../prefect-data",
+    local_data_path: "/home/y.chernigin/de-zoomcamp-homework/week3/prefect-data",
     gcs_data_path: "data/fhv",
     gcs_block_name: "gcs-bucket-prefect-flows"
 }
