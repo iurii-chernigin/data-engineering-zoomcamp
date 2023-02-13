@@ -1,0 +1,71 @@
+###
+### A complete description of a Prefect Deployment for flow 'elt-fhv-tripdata-to-gcs-base'
+###
+name: elt_fhv_tripdata_to_gcs
+description: Base flow for parametrized control of data loading
+version: 97c71568e14a650630b1297b636feae8
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+tags: []
+parameters: {
+    year: 2019,
+    months: [1],
+    local_data_path: "/home/y.chernigin/de-zoomcamp-homework/week3/prefect-data",
+    gcs_data_path: "data/fhv",
+    gcs_block_name: "gcs-bucket-prefect-flows"
+}
+schedule: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: elt-fhv-tripdata-to-gcs-base
+manifest_path: null
+storage: null
+path: /home/y.chernigin/de-zoomcamp-homework/week3/prefect-flows
+entrypoint: elt_fhv_tripdata_to_gcs.py:elt_fhv_tripdata_to_gcs_base
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    year:
+      title: year
+      default: 2019
+      position: 0
+      type: integer
+    months:
+      title: months
+      default:
+      - 1
+      position: 1
+      type: array
+      items:
+        type: integer
+    local_data_path:
+      title: local_data_path
+      default: ../prefect-data
+      position: 2
+      type: string
+    gcs_data_path:
+      title: gcs_data_path
+      default: data/fhv
+      position: 3
+      type: string
+    gcs_block_name:
+      title: gcs_block_name
+      default: gcs-bucket-prefect-flows
+      position: 4
+      type: string
+  required: null
+  definitions: null
