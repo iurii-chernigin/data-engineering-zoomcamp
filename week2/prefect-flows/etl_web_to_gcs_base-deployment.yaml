@@ -9,9 +9,9 @@ work_queue_name: default
 tags: []
 parameters: {
     color: "green",
-    year: 2020,
+    year: 2019,
     months: [1],
-    local_base_path: "../prefect-data",
+    local_base_path: "/home/y.chernigin/de-zoomcamp-homework/week2/prefect-data",
     gcs_base_path: "data"
 }
 schedule: null

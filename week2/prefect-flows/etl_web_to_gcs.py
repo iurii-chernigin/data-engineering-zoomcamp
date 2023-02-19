@@ -17,9 +17,44 @@ def fetch(dataset_url: str) -> pd.DataFrame:
 @task(log_prints=True)
 def clean(df: pd.DataFrame) -> pd.DataFrame:
     """Fix dtype issues"""
-    df["lpep_pickup_datetime"] = pd.to_datetime(df["lpep_pickup_datetime"])
-    df["lpep_dropoff_datetime"] = pd.to_datetime(df["lpep_dropoff_datetime"])
-    print(df.head(2))
+    
+    # Cast pickup and dropoff columns to datetime datatype
+    if "lpep_pickup_datetime" in df.columns and "lpep_dropoff_datetime" in df.columns:
+        df["lpep_pickup_datetime"] = pd.to_datetime(df["lpep_pickup_datetime"])
+        df["lpep_dropoff_datetime"] = pd.to_datetime(df["lpep_dropoff_datetime"])
+    elif "tpep_pickup_datetime" in df.columns and "tpep_dropoff_datetime" in df.columns:
+        df["tpep_pickup_datetime"] = pd.to_datetime(df["tpep_pickup_datetime"])
+        df["tpep_dropoff_datetime"] = pd.to_datetime(df["tpep_dropoff_datetime"])   
+    elif "Pickup_datetime" in df.columns and "DropOff_datetime" in df.columns:
+        df["Pickup_datetime"] = pd.to_datetime(df["Pickup_datetime"])
+        df["DropOff_datetime"] = pd.to_datetime(df["DropOff_datetime"])
+    else:
+        print("There are no *_pickup_datetime and *_dropoff_datetime columns was found")    
+
+    if "passenger_count" in df.columns:
+        df["passenger_count"] = df["passenger_count"].fillna(0).astype("Int8")
+    
+    if "VendorID" in df.columns:
+        df["VendorID"] = df["VendorID"].astype("Int8")
+    
+    if "payment_type" in df.columns:
+        df["payment_type"] = df["payment_type"].astype("Int8")
+    
+    if "trip_type" in df.columns:
+        df["trip_type"] = df["trip_type"].astype("Int8")
+
+    if "RatecodeID" in df.columns:
+        df["RatecodeID"] = df["RatecodeID"].astype("Int8")
+
+    if "PULocationID" in df.columns:
+        df["PULocationID"] = df["PULocationID"].astype("Int16")
+
+    if "DOLocationID" in df.columns:
+        df["DOLocationID"] = df["DOLocationID"].astype("Int16")
+
+    if "store_and_fwd_flag" in df.columns:
+        df["store_and_fwd_flag"] = df["store_and_fwd_flag"].astype(str)
+
     print(f"columns: {df.dtypes}")
     print(f"rows: {len(df)}")
     return df
@@ -66,7 +101,7 @@ def etl_web_to_gcs(
 def etl_web_to_gcs_base(
     color: str = "green",
     year: int = 2020,
-    months: list[int] = [1],
+    months: list[int] = [2],
     local_base_path: str = "../prefect-data",
     gcs_base_path: str = "data"
 ):
