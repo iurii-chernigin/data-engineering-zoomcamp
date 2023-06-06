@@ -4,4 +4,4 @@
 
 [DataTalks.Club LinkedIn](https://www.linkedin.com/company/datatalks-club/?originalSubdomain=de)
 
-[Data Engineering Zoomcamp repository]((https://github.com/DataTalksClub/mlops-zoomcamp)
+[Data Engineering Zoomcamp repository](https://github.com/DataTalksClub/data-engineering-zoomcamp)
